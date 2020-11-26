@@ -1,0 +1,14 @@
+version: "3.7"
+
+volumes: 
+  orcl_volume: {}
+
+services:
+  oracle:
+    image: cheesecat47/comp322_phase4:1.1
+    volumes: 
+      - orcl_volume:/home/COMP322
+    ports: 
+      - 19000:8080
+      - 1700:1521
+    privileged: true
