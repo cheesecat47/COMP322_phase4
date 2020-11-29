@@ -17,8 +17,13 @@ $ cd api_src
 $ docker-compose -f docker-compose.api.yml -f docker-compose.oracle.yml up -d
 ```
 
+#### REST API examples
+* 
+
 ## Dev Environment  
 ### Frontend  
+* Tomcat  
+* Datatables  
 
 ### Api server  
 * Ubuntu 20.04 (WSL)  

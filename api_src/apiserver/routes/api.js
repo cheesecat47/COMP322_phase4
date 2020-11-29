@@ -22,7 +22,7 @@ router.get('/get-test1', function(req, res, next) {
     conn = c;
     console.log('connected');
     
-    let query = "select * from genre";
+    let query = "select table_name, num_rows, avg_row_len, last_analyzed from user_tables";
     return conn.execute(query, [], {outFormat: oracledb.OBJECT})
   }).then(query_res => {
     // console.log('query executed: ', res);
