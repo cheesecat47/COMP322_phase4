@@ -1,0 +1,39 @@
+extends layout
+
+block head
+  link(rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css")
+
+block content
+  h1= title
+  p 2020 COMP322 Team9 phase4 api server
+
+  h3 Datatables ex
+  table(id="table_id" class="display")
+    thead
+      tr
+        th 테이블 이름
+        th 행 개수
+        th 행 길이 평균
+        th 마지막 수정 일시
+
+block scripts
+  script(type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js")  
+  script(type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js")
+  
+  script(type="text/javascript").
+    $(document).ready( function () {
+      $('#table_id').DataTable({
+        serverSide: true,
+        stateSave: true,
+        ajax: {
+          url: '/api/get-test2',
+          type: "POST"
+        },
+        columns: [
+          { data: 'TABLE_NAME' },
+          { data: 'NUM_ROWS' },
+          { data: 'AVG_ROW_LEN' },
+          { data: 'LAST_ANALYZED' }
+        ]
+      });
+    } );

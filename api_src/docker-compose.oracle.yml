@@ -6,9 +6,11 @@ volumes:
 services:
   oracle:
     image: cheesecat47/comp322_phase4:1.1
+    container_name: comp322_team9_phase4_oracle
     volumes: 
       - orcl_volume:/home/COMP322
     ports: 
-      - 19000:8080
-      - 1700:1521
+      - 17010:8080
+      - 17000:1521
     privileged: true
+    restart: always
