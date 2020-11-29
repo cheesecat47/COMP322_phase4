@@ -44,4 +44,37 @@ router.get('/get-test1', function(req, res, next) {
   });
 });
 
+router.post('/get-test2', function(req, res, next) {
+  console.log('get-test2: req: ', req.body);
+
+  oracledb.getConnection({
+    user: dbconfig.user,
+    password: dbconfig.password,
+    connectString: dbconfig.connectString
+  }).then(function(c) {
+    conn = c;
+    console.log('connected');
+    
+    let query = "select table_name, num_rows, avg_row_len, last_analyzed from user_tables";
+    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
+  }).then(query_res => {
+    // console.log('query executed: ', res);
+    console.log('res.rows', query_res.rows);
+    let data = {'data': query_res.rows};
+    res.send(JSON.stringify(data));
+    console.log('response.send');
+  }).catch(err => {
+    console.error(err.message);
+  }).then(() => {
+    if (conn) {
+      return conn.close();
+    }
+  }).then(function() {
+    console.log('Connection closed');
+  })
+  .catch(err => {
+    console.log('Error closing connection', err);
+  });
+});
+
 module.exports = router;
