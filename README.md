@@ -12,8 +12,15 @@ $ cd COMP322_phase4
 ### Frontend  
 
 ### Api server  
+#### Prerequisites
+* Node.js 14.9.0 ~  
+* NPM 6.14.8 ~  
+* Docker 19.03.13 ~  
+* Docker-compse 1.27.4 ~  
+ 
 ```bash
 $ cd api_src
+$ npm install
 $ docker-compose -f docker-compose.api.yml -f docker-compose.oracle.yml up -d
 ```
 
