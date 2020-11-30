@@ -2,6 +2,7 @@ FROM node:15
 
 WORKDIR /usr/src/app
 
+#COPY . .
 COPY package*.json ./
 
 RUN npm install && \
@@ -9,7 +10,7 @@ RUN npm install && \
     npm install -g --save oracledb && \
     apt-get update && apt-get install -y libaio1
 
-COPY . .
+#COPY . .
 
 # https://oracle.github.io/node-oracledb/INSTALL.html#instzip
 RUN mkdir -p /opt/oracle && \

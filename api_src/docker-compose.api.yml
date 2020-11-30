@@ -7,7 +7,12 @@ services:
       dockerfile: Dockerfile
     container_name: comp322_team9_phase4_api
     volumes: 
-      - ./apiserver:/usr/src/app
+      - ./apiserver/routes:/usr/src/app/routes
+      - ./apiserver/views:/usr/src/app/views
+      - ./apiserver/public:/usr/src/app/public
+      - ./apiserver/bin:/usr/src/app/bin
+      - ./apiserver/app.js:/usr/src/app/app.js
+      - ./apiserver/ecosystem.config.js:/usr/src/app/ecosystem.config.js
     ports: 
       - 18000:3000
     restart: always
