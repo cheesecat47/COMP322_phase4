@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="EUC-KR">
-<title>Team9 Phase4</title>
-</head>
+<%@include file="./include/header.jsp"%>
 <body>
-
+	<%@include file="./include/afterLogin.jsp"%>
+	<%@include file="./include/memberRelatedFunctions.jsp"%>
 </body>
 </html>

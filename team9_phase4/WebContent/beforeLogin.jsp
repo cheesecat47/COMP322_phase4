@@ -3,10 +3,9 @@
 <!DOCTYPE html>
 <html>
 <%@include file="./include/header.jsp"%>
-
 <body>
 	<div class="text-center mt-4">
-	    <form action="afterLogin.jsp" class="form-signin" method="POST">
+	    <form action="checkTheEntireVideo.jsp" class="form-signin" method="POST">
 	        <h2 class="form-signin-heading">knuMovieDB</h2>
 	        <label for="inputId" class="sr-only">ID</label>
 	        <input type="text" id="inputId" name="id" class="form-control" placeholder="ID"
