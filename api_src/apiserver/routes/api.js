@@ -25,24 +25,41 @@ router.post('/sign-up', function(req, res) {
     conn = c;
     console.log('sign-up: req: ', req.body);
 
+    // 필수 항목 검사
+    check.checkRequiredAttr(req.body.account_id);
+    check.checkRequiredAttr(req.body.account_pw);
+    check.checkRequiredAttr(req.body.account_name);
+    check.checkRequiredAttr(req.body.account_phone);
+
+    // 생년월일 포맷 검사
+    check.checkDateFormat(req.body.account_bday);
+
+    // 전화번호 포맷 검사
+    check.checkPhoneFormat(req.body.account_phone);
+
     var data = {};
     for (let key of account.values()) {
       let value = req.body[key];
       // console.log('sign-up: req: key: ', key, typeof key, ' / val: ', value, typeof value);
       switch (key) {
         case "account_bday":
-          check.checkTest('test ');
           data[key] = "to_date('" + value + "', 'yyyy-mm-dd')";
           break;
         case "account_address":
         case "account_job":
+          // 필수 아닌 항목 입력을 안 했으면 "null"이라는 문자열로 바꾸기
           if (value == undefined ) {
             data[key] = "'null'";
           } else {
             data[key] = "'" + value + "'";
           }
           break;
-        case "account_job":
+        case "account_sex":
+          // 성별 검사. M이나 F가 아니면 NULL 입력, m이나 f면 대문자로 바꾸기.
+          data[key] = check.checkSexFormat(value);
+          break;
+        // 권한 입력 및 멤버십 등급은 회원가입 시에는 표시하지 않습니다.
+        case "account_identity":
           data[key] = "'customer'";
           break;
         case "account_membership":
@@ -72,10 +89,10 @@ router.post('/sign-up', function(req, res) {
 
     conn.commit();
     console.log('sign-up: commit');
-  }).catch(err => {
+  }).catch((err) => {
     conn.rollback();
-    let errmsg = 'sign-up: Error exists, rollback';
-    console.error(errmsg, err.message);
+    let errmsg = 'sign-up: Error exists, rollback: ' + err.message;
+    console.error(errmsg);
     let data = {'data': errmsg};
     res.send(JSON.stringify(data));
   }).then(() => {
@@ -163,10 +180,38 @@ router.post('/get-test2', function(req, res, next) {
   });
 });
 
+
 var check = {
-  checkTest: function (arg) {
-    console.log("checkTest: arg: ", arg);
-    return arg + "arg";
+  checkRequiredAttr: function(attr) {
+    console.log("checkRequiredAttr: attr: ", attr, typeof attr);
+    if (attr == "'undefined'") {
+      console.error("checkRequiredAttr: undefined");
+      throw "필수 항목이 없습니다."
+    }
+  },
+  checkDateFormat: function(attr) {
+    console.log("checkDateFormat: attr: ", attr, typeof attr);
+    var reg = new RegExp('^\\d{4}-\\d{2}-\\d{2}$', 'g');
+    if (!reg.test(attr)) {
+      console.error("checkDateFormat: date format error");
+      throw "날짜 형식이 틀렸습니다."
+    }
+  },
+  checkSexFormat: function(attr) {
+    console.log("checkSexFormat: attr: ", attr, typeof attr);
+    if (attr == "m" || attr == "M" || attr == "f" || attr == "F") {
+      return "'" + attr.toUpperCase() + "'";
+    } else {
+      throw "성별을 잘못 입력했습니다."
+    }
+  },
+  checkPhoneFormat: function(attr) {
+    console.log("checkPhoneFormat: attr: ", attr, typeof attr);
+    var reg = new RegExp('^\\d{3}-\\d{4}$', 'g');
+    if (!reg.test(attr)) {
+      console.error("checkPhoneFormat: phone format error");
+      throw "전화번호 형식이 틀렸습니다."
+    }
   }
 }
 
