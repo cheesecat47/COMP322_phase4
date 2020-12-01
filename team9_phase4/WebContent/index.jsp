@@ -4,9 +4,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>COMP322 Team9 Phase4</title>
+<title>Team9 Phase4</title>
 </head>
 <body>
-hello
+	<% 
+		response.sendRedirect("./beforeLogin.jsp");
+	%>
 </body>
 </html>
