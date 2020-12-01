@@ -5,9 +5,9 @@ const oracledb = require('oracledb');
 oracledb.fetchAsString = [ oracledb.DATE, oracledb.NUMBER ];
 oracledb.initOracleClient({configDir: '/opt/oracle/instantclient_19_9'});
 const dbconfig = {
-  user: process.env.NODEORACLEDB_USER || "team9",
-  password: process.env.NODEORACLEDB_PASSWORD || "dbteam9",
-  connectString: process.env.NODEORACLEDB_CONNECTSTRING || "comp322_team9_phase4_oracle/xe"
+  user: process.env.NODEORACLEDB_USER,
+  password: process.env.NODEORACLEDB_PASSWORD,
+  connectString: process.env.NODEORACLEDB_CONNECTSTRING
 }
 oracledb.autoCommit = false;
 let conn;
@@ -27,26 +27,30 @@ router.post('/sign-up', function(req, res) {
 
     var data = {};
     for (let key of account.values()) {
-      console.log('sign-up: req: key: ', key, typeof key, ' / val: ', req.body[key], typeof req.body[key]);
-      if (key == "account_bday") {
-        data[key] = "to_date('" + req.body[key] + "', 'yyyy-mm-dd')";
-      } else if (key == "account_sex") {
-        data[key] = "'" + req.body[key] + "'";
-      } else if (key == "account_phone") {
-        data[key] = "'" + req.body[key] + "'";
-      } else if (key == "account_address" || key == "account_job") {
-        if (req.body[key] == undefined ) {
-          console.log('here');
-          data[key] = "'null'";
-        } else {
-          data[key] = "'" + req.body[key] + "'";
-        }
-      } else if (key == "account_identity") {
-        data[key] = "'customer'";
-      } else if (key == "account_membership") {
-        data[key] = "'Basic'";
-      } else {
-        data[key] = "'" + req.body[key] + "'";
+      let value = req.body[key];
+      // console.log('sign-up: req: key: ', key, typeof key, ' / val: ', value, typeof value);
+      switch (key) {
+        case "account_bday":
+          check.checkTest('test ');
+          data[key] = "to_date('" + value + "', 'yyyy-mm-dd')";
+          break;
+        case "account_address":
+        case "account_job":
+          if (value == undefined ) {
+            data[key] = "'null'";
+          } else {
+            data[key] = "'" + value + "'";
+          }
+          break;
+        case "account_job":
+          data[key] = "'customer'";
+          break;
+        case "account_membership":
+          data[key] = "'Basic'";
+          break;
+        default:
+          data[key] = "'" + value + "'";
+          break;
       }
     }
 
@@ -63,7 +67,7 @@ router.post('/sign-up', function(req, res) {
   }).then((query_res) => {
     console.log('sign-up: query_res.rowsAffected', query_res.rowsAffected);
     let data = {'data': query_res.rowsAffected};
-    res.send(JSON.stringify(data));
+    res.json(JSON.stringify(data));
     console.log('sign-up: response.send');
 
     conn.commit();
@@ -158,5 +162,12 @@ router.post('/get-test2', function(req, res, next) {
     console.log('Error closing connection', err);
   });
 });
+
+var check = {
+  checkTest: function (arg) {
+    console.log("checkTest: arg: ", arg);
+    return arg + "arg";
+  }
+}
 
 module.exports = router;
