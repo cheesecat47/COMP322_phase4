@@ -1,7 +1,7 @@
 # COMP322_phase4
 > 2020-2 [KNU][knu] [CSE][knucse] Database team project phase4
 >
-> Project description  
+> Movie DB Website
 
 ## How to Use
 ```bash
@@ -13,19 +13,16 @@ $ cd COMP322_phase4
 
 ### Api server  
 #### Prerequisites
-* Node.js 14.9.0 ~  
-* NPM 6.14.8 ~  
-* Docker 19.03.13 ~  
-* Docker-compse 1.27.4 ~  
- 
+* [Docker][Docker] ^19.03.13  
+* [Docker-compse][Docker-compse] ^1.27.4  
+  
 ```bash
 $ cd api_src
-$ npm install
 $ docker-compose -f docker-compose.api.yml -f docker-compose.oracle.yml up -d
 ```
 
 #### REST API examples
-* 
+* [Go to ./api_src/README.md](./api_src/README.md)
 
 ## Dev Environment  
 ### Frontend  
@@ -33,12 +30,9 @@ $ docker-compose -f docker-compose.api.yml -f docker-compose.oracle.yml up -d
 * Datatables  
 
 ### Api server  
-* Ubuntu 20.04 (WSL)  
-* Node.js 14.9.0
-* NPM 6.14.8  
-* Docker 19.03.13  
-* Docker-compse 1.27.4  
-* Oracle 11g (docker img)
+* [Docker][Docker] & [Docker-compse][Docker-compse]  
+* [node:15](https://hub.docker.com/_/node)  
+* [Oracle 11g](https://hub.docker.com/repository/docker/cheesecat47/comp322_phase4)  
 
 
 ## Contributors' info
@@ -50,4 +44,5 @@ Shin Juyong – [cheesecat47](https://github.com/cheesecat47) – cheesecat47@gm
 
 [knu]: http://www.knu.ac.kr/
 [knucse]: http://computer.knu.ac.kr/
-
+[Docker]: https://docs.docker.com/engine/install/
+[Docker-compse]: https://docs.docker.com/compose/install/

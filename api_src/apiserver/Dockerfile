@@ -7,10 +7,7 @@ COPY package*.json ./
 
 RUN npm install && \
     npm install -g pm2@latest && \
-    npm install -g --save oracledb && \
     apt-get update && apt-get install -y libaio1
-
-#COPY . .
 
 # https://oracle.github.io/node-oracledb/INSTALL.html#instzip
 RUN mkdir -p /opt/oracle && \

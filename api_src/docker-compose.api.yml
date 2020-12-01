@@ -15,4 +15,8 @@ services:
       - ./apiserver/ecosystem.config.js:/usr/src/app/ecosystem.config.js
     ports: 
       - 18000:3000
+    environment: 
+      - NODEORACLEDB_USER=team9
+      - NODEORACLEDB_PASSWORD=dbteam9
+      - NODEORACLEDB_CONNECTSTRING=comp322_team9_phase4_oracle/xe
     restart: always

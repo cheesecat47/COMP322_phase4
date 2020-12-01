@@ -5,11 +5,12 @@ const oracledb = require('oracledb');
 oracledb.fetchAsString = [ oracledb.DATE, oracledb.NUMBER ];
 oracledb.initOracleClient({configDir: '/opt/oracle/instantclient_19_9'});
 const dbconfig = {
-  user: process.env.NODEORACLEDB_USER || "team9",
-  password: process.env.NODEORACLEDB_PASSWORD || "dbteam9",
-  connectString: process.env.NODEORACLEDB_CONNECTSTRING || "comp322_team9_phase4_oracle/xe"
+  user: process.env.NODEORACLEDB_USER,
+  password: process.env.NODEORACLEDB_PASSWORD,
+  connectString: process.env.NODEORACLEDB_CONNECTSTRING
 }
 oracledb.autoCommit = false;
+oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 let conn;
 
 let account = ["account_id", "account_pw", "account_name", "account_bday", "account_sex", "account_address", "account_phone", "account_identity", "account_job", "account_membership"];
@@ -17,36 +18,54 @@ let account = ["account_id", "account_pw", "account_name", "account_bday", "acco
 
 // https://blogs.oracle.com/oraclemagazine/keep-your-nodejs-promises
 router.post('/sign-up', function(req, res) {
-  oracledb.getConnection({
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
-  }).then(function(c) {
+  oracledb.getConnection(dbconfig)
+  .then(function(c) {
     conn = c;
     console.log('sign-up: req: ', req.body);
 
+    // 필수 항목 검사
+    check.checkRequiredAttr(req.body.account_id);
+    check.checkRequiredAttr(req.body.account_pw);
+    check.checkRequiredAttr(req.body.account_name);
+    check.checkRequiredAttr(req.body.account_phone);
+
+    // 생년월일 포맷 검사
+    check.checkDateFormat(req.body.account_bday);
+
+    // 전화번호 포맷 검사
+    check.checkPhoneFormat(req.body.account_phone);
+
     var data = {};
     for (let key of account.values()) {
-      console.log('sign-up: req: key: ', key, typeof key, ' / val: ', req.body[key], typeof req.body[key]);
-      if (key == "account_bday") {
-        data[key] = "to_date('" + req.body[key] + "', 'yyyy-mm-dd')";
-      } else if (key == "account_sex") {
-        data[key] = "'" + req.body[key] + "'";
-      } else if (key == "account_phone") {
-        data[key] = "'" + req.body[key] + "'";
-      } else if (key == "account_address" || key == "account_job") {
-        if (req.body[key] == undefined ) {
-          console.log('here');
-          data[key] = "'null'";
-        } else {
-          data[key] = "'" + req.body[key] + "'";
-        }
-      } else if (key == "account_identity") {
-        data[key] = "'customer'";
-      } else if (key == "account_membership") {
-        data[key] = "'Basic'";
-      } else {
-        data[key] = "'" + req.body[key] + "'";
+      let value = req.body[key];
+      // console.log('sign-up: req: key: ', key, typeof key, ' / val: ', value, typeof value);
+      switch (key) {
+        case "account_bday":
+          data[key] = "to_date('" + value + "', 'yyyy-mm-dd')";
+          break;
+        case "account_address":
+        case "account_job":
+          // 필수 아닌 항목 입력을 안 했으면 "null"이라는 문자열로 바꾸기
+          if (value == undefined ) {
+            data[key] = "'null'";
+          } else {
+            data[key] = "'" + value + "'";
+          }
+          break;
+        case "account_sex":
+          // 성별 검사. M이나 F가 아니면 NULL 입력, m이나 f면 대문자로 바꾸기.
+          data[key] = check.checkSexFormat(value);
+          break;
+        // 권한 입력 및 멤버십 등급은 회원가입 시에는 표시하지 않습니다.
+        case "account_identity":
+          data[key] = "'customer'";
+          break;
+        case "account_membership":
+          data[key] = "'Basic'";
+          break;
+        default:
+          data[key] = "'" + value + "'";
+          break;
       }
     }
 
@@ -59,19 +78,19 @@ router.post('/sign-up', function(req, res) {
     let query = "insert into account values (" + joined_values + ")";
     console.log("sign-up: query: ", query);
 
-    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
+    return conn.execute(query, [], {})
   }).then((query_res) => {
     console.log('sign-up: query_res.rowsAffected', query_res.rowsAffected);
     let data = {'data': query_res.rowsAffected};
-    res.send(JSON.stringify(data));
+    res.json(JSON.stringify(data));
     console.log('sign-up: response.send');
 
     conn.commit();
     console.log('sign-up: commit');
-  }).catch(err => {
+  }).catch((err) => {
     conn.rollback();
-    let errmsg = 'sign-up: Error exists, rollback';
-    console.error(errmsg, err.message);
+    let errmsg = 'sign-up: Error exists, rollback: ' + err.message;
+    console.error(errmsg);
     let data = {'data': errmsg};
     res.send(JSON.stringify(data));
   }).then(() => {
@@ -88,29 +107,26 @@ router.post('/sign-up', function(req, res) {
 
 
 router.post('/log-in', function(req, res) {
-  oracledb.getConnection({
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
-  }).then(function(c) {
+  oracledb.getConnection(dbconfig)
+  .then(function(c) {
     conn = c;
     console.log('log-in: req: ', req.body);
-    
-    let query = "insert into account () values ()";
 
-    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
+    let query = "select * from account where account_id = '" 
+        + req.body.account_id + "' and account_pw = '"
+        + req.body.account_pw + "'";
+    console.log("log-in: query: ", query);
+
+    return conn.execute(query, [], {})
   }).then((query_res) => {
-    console.log('sign-up: query_res.rowsAffected', query_res.rowsAffected);
-    let data = {'data': query_res.rowsAffected};
-    res.send(JSON.stringify(data));
-    console.log('sign-up: response.send');
+    console.log('log-in: query_res', query_res.rows);
+    let data = {'data': query_res.rows};
+    res.send(data);
+    console.log('log-in: response.send');
 
-    conn.commit();
-    console.log('sign-up: commit');
   }).catch(err => {
-    conn.rollback();
-    let errmsg = 'sign-up: Error exists, rollback';
-    console.error(errmsg, err.message);
+    let errmsg = 'log-in: Error exists' + err.message;
+    console.error(errmsg);
     let data = {'data': errmsg};
     res.send(JSON.stringify(data));
   }).then(() => {
@@ -118,45 +134,46 @@ router.post('/log-in', function(req, res) {
       return conn.close();
     }
   }).then(function() {
-    console.log('sign-up: Connection closed');
+    console.log('log-in: Connection closed');
   })
   .catch(err => {
-    console.log('sign-up: Error closing connection', err);
+    console.log('log-in: Error closing connection', err);
   });
 });
 
 
-router.post('/get-test2', function(req, res, next) {
-  console.log('get-test2: req: ', req.body);
-
-  oracledb.getConnection({
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
-  }).then(function(c) {
-    conn = c;
-    console.log('connected');
-    
-    let query = "select table_name, num_rows, avg_row_len, last_analyzed from user_tables";
-    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
-  }).then(query_res => {
-    // console.log('query executed: ', res);
-    console.log('res.rows', query_res.rows);
-    let data = {'data': query_res.rows};
-    res.send(JSON.stringify(data));
-    console.log('response.send');
-  }).catch(err => {
-    console.error(err.message);
-  }).then(() => {
-    if (conn) {
-      return conn.close();
+var check = {
+  checkRequiredAttr: function(attr) {
+    console.log("checkRequiredAttr: attr: ", attr, typeof attr);
+    if (attr == "'undefined'") {
+      console.error("checkRequiredAttr: undefined");
+      throw "필수 항목이 없습니다."
     }
-  }).then(function() {
-    console.log('Connection closed');
-  })
-  .catch(err => {
-    console.log('Error closing connection', err);
-  });
-});
+  },
+  checkDateFormat: function(attr) {
+    console.log("checkDateFormat: attr: ", attr, typeof attr);
+    var reg = new RegExp('^\\d{4}-\\d{2}-\\d{2}$', 'g');
+    if (!reg.test(attr)) {
+      console.error("checkDateFormat: date format error");
+      throw "날짜 형식이 틀렸습니다."
+    }
+  },
+  checkSexFormat: function(attr) {
+    console.log("checkSexFormat: attr: ", attr, typeof attr);
+    if (attr == "m" || attr == "M" || attr == "f" || attr == "F") {
+      return "'" + attr.toUpperCase() + "'";
+    } else {
+      throw "성별을 잘못 입력했습니다."
+    }
+  },
+  checkPhoneFormat: function(attr) {
+    console.log("checkPhoneFormat: attr: ", attr, typeof attr);
+    var reg = new RegExp('^\\d{3}-\\d{4}$', 'g');
+    if (!reg.test(attr)) {
+      console.error("checkPhoneFormat: phone format error");
+      throw "전화번호 형식이 틀렸습니다."
+    }
+  }
+}
 
 module.exports = router;
