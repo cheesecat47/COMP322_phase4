@@ -10,6 +10,7 @@ const dbconfig = {
   connectString: process.env.NODEORACLEDB_CONNECTSTRING
 }
 oracledb.autoCommit = false;
+oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 let conn;
 
 let account = ["account_id", "account_pw", "account_name", "account_bday", "account_sex", "account_address", "account_phone", "account_identity", "account_job", "account_membership"];
@@ -17,11 +18,8 @@ let account = ["account_id", "account_pw", "account_name", "account_bday", "acco
 
 // https://blogs.oracle.com/oraclemagazine/keep-your-nodejs-promises
 router.post('/sign-up', function(req, res) {
-  oracledb.getConnection({
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
-  }).then(function(c) {
+  oracledb.getConnection(dbconfig)
+  .then(function(c) {
     conn = c;
     console.log('sign-up: req: ', req.body);
 
@@ -80,7 +78,7 @@ router.post('/sign-up', function(req, res) {
     let query = "insert into account values (" + joined_values + ")";
     console.log("sign-up: query: ", query);
 
-    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
+    return conn.execute(query, [], {})
   }).then((query_res) => {
     console.log('sign-up: query_res.rowsAffected', query_res.rowsAffected);
     let data = {'data': query_res.rowsAffected};
@@ -109,29 +107,26 @@ router.post('/sign-up', function(req, res) {
 
 
 router.post('/log-in', function(req, res) {
-  oracledb.getConnection({
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
-  }).then(function(c) {
+  oracledb.getConnection(dbconfig)
+  .then(function(c) {
     conn = c;
     console.log('log-in: req: ', req.body);
-    
-    let query = "insert into account () values ()";
 
-    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
+    let query = "select * from account where account_id = '" 
+        + req.body.account_id + "' and account_pw = '"
+        + req.body.account_pw + "'";
+    console.log("log-in: query: ", query);
+
+    return conn.execute(query, [], {})
   }).then((query_res) => {
-    console.log('sign-up: query_res.rowsAffected', query_res.rowsAffected);
-    let data = {'data': query_res.rowsAffected};
-    res.send(JSON.stringify(data));
-    console.log('sign-up: response.send');
+    console.log('log-in: query_res', query_res.rows);
+    let data = {'data': query_res.rows};
+    res.send(data);
+    console.log('log-in: response.send');
 
-    conn.commit();
-    console.log('sign-up: commit');
   }).catch(err => {
-    conn.rollback();
-    let errmsg = 'sign-up: Error exists, rollback';
-    console.error(errmsg, err.message);
+    let errmsg = 'log-in: Error exists' + err.message;
+    console.error(errmsg);
     let data = {'data': errmsg};
     res.send(JSON.stringify(data));
   }).then(() => {
@@ -139,44 +134,10 @@ router.post('/log-in', function(req, res) {
       return conn.close();
     }
   }).then(function() {
-    console.log('sign-up: Connection closed');
+    console.log('log-in: Connection closed');
   })
   .catch(err => {
-    console.log('sign-up: Error closing connection', err);
-  });
-});
-
-
-router.post('/get-test2', function(req, res, next) {
-  console.log('get-test2: req: ', req.body);
-
-  oracledb.getConnection({
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
-  }).then(function(c) {
-    conn = c;
-    console.log('connected');
-    
-    let query = "select table_name, num_rows, avg_row_len, last_analyzed from user_tables";
-    return conn.execute(query, [], {outFormat: oracledb.OBJECT})
-  }).then(query_res => {
-    // console.log('query executed: ', res);
-    console.log('res.rows', query_res.rows);
-    let data = {'data': query_res.rows};
-    res.send(JSON.stringify(data));
-    console.log('response.send');
-  }).catch(err => {
-    console.error(err.message);
-  }).then(() => {
-    if (conn) {
-      return conn.close();
-    }
-  }).then(function() {
-    console.log('Connection closed');
-  })
-  .catch(err => {
-    console.log('Error closing connection', err);
+    console.log('log-in: Error closing connection', err);
   });
 });
 

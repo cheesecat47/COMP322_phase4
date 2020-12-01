@@ -22,7 +22,7 @@ $ docker-compose -f docker-compose.api.yml -f docker-compose.oracle.yml up -d
 ```
 
 #### REST API examples
-* /api/sign-up  
+* [Go to ./api_src/README.md](./api_src/README.md)
 
 ## Dev Environment  
 ### Frontend  
