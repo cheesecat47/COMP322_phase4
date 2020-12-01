@@ -1,18 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="EUC-KR">
-<title>Team9_Phase4</title>
-</head>
+<%@include file="./include/header.jsp"%>
+
 <body>
-	<form action = "afterLogin.jsp" method = "POST">
-		<input type = "submit" value = "·Î±×ÀÎ">
-	</form>
+	<div class="text-center mt-4">
+	    <form action="afterLogin.jsp" class="form-signin" method="POST">
+	        <h2 class="form-signin-heading">knuMovieDB</h2>
+	        <label for="inputId" class="sr-only">ID</label>
+	        <input type="text" id="inputId" name="id" class="form-control" placeholder="ID"
+	               required autofocus>
+	        <label for="inputPassword" class="sr-only">Password</label>
+	        <input type="password" id="inputPassword" name="pw" class="form-control"
+	               placeholder="Password" required>
+	        <button class="btn btn-lg btn-primary btn-block" type="submit">ë¡œê·¸ì¸</button>
+	    </form>
+	    <a href="signUp.jsp" class="btn btn-lg btn-block join-btn">íšŒì›ê°€ì…</a>
+	    <hr class="hr-light mb-3 mt-4">
+	    <div class="inline-ul text-center">
 	
-	<form action = "signUp.jsp" method = "POST">
-		<input type = "submit" value = "È¸¿ø °¡ÀÔ">
-	</form>
+	    </div>
+	</div>
 </body>
 </html>
