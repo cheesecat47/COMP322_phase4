@@ -5,6 +5,10 @@
 <%@include file="./header.jsp"%>
 <body>
 	<div class="text-center mt-4">
+		<h2 class="form-signin-heading">knuMovieDB</h2>
+	</div>
+	
+	<div class="text-center mt-4">
 		<button onclick="location='checkTheEntireVideo.jsp'" style="width:24%" class="btn btn-outline-secondary">영상물 관련 기능</button>
 		
 		<button onclick="location='memberInfoModification.jsp'" style="width:24%" class="btn btn-outline-secondary">평가 관련 기능</button>
