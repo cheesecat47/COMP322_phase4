@@ -2,7 +2,6 @@
 	pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
-<%@include file="./header.jsp"%>
 <body>
 	<div class="text-center mt-4">
 		<button onclick="location='checkMyEvaluationHistory.jsp'" style="width:49%" class="btn btn-outline-secondary">나의 평가 내역 확인</button>

@@ -10,6 +10,5 @@
             crossorigin="anonymous"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script src="./assets/js/index.js"></script>
     <meta charset="utf-8">
 </head>
