@@ -2,7 +2,6 @@
 	pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
-<%@include file="./header.jsp"%>
 <body>
 	<div class="container">
 	    <form action="/checkSignUpInfo.do" method="POST" name="signUpForm" enctype="multipart/form-data" >

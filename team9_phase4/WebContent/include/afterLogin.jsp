@@ -2,7 +2,6 @@
 	pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
-<%@include file="./header.jsp"%>
 <body>
 	<div class="text-center mt-4">
 		<h2 class="form-signin-heading">knuMovieDB</h2>
