@@ -6,7 +6,8 @@
 <body>
 	<div class="text-center col-md-4" style="margin:auto; margin-top:100px;">
 	<h2 class="form-signin-heading">knuMovieDB</h2>
-	    <form action="checkTheEntireVideo.jsp" class="form-signin" method="POST">
+	    <!-- <form action="checkTheEntireVideo.jsp" class="form-signin" method="POST">  -->
+	    <form action="./process/loginProcess.jsp" class="form-signin" method="POST">
 	        <label for="inputId" class="sr-only">ID</label>
 	        <input type="text" id="inputId" name="id" class="form-control" placeholder="ID"
 	               required autofocus>
