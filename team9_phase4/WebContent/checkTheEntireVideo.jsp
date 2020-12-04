@@ -4,8 +4,6 @@
 <style>
 	#footer {
 
-    position:absolute;
-
     bottom:0;
 
     width:100%;
@@ -18,6 +16,7 @@
 <body>
 	<%@include file="./include/afterLogin.jsp"%>
 	<%@include file="./include/videoRelatedFunctions.jsp"%>
+	<br>
 	
 	<div class="container">
 		<div class="row justify-content-center">
@@ -25,15 +24,15 @@
 				<table id="datatables" class="display">
 					<thead>
 						<tr>
-							<th>등록 번호</th>
-							<th>제목</th>
+							<th>영상물 등록 번호</th>
+							<th>영상물 제목</th>
 						</tr>
 					</thead>
 				</table>
 			</div>
 		</div>
 	</div>
-
+	<br>
 	<div id = "footer">
 		<%@include file="./include/registrationNumberSearch.jsp"%>
 	</div>
@@ -43,6 +42,8 @@
 			$('#datatables').DataTable({
 				//serverSide: true,
 				stateSave: true,
+				searching: false,
+				info: false,
 				ajax: {
 					url: './process/getEntireVideo.jsp'
 				},
