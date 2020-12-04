@@ -7,7 +7,6 @@
 
 <%@ page import="org.json.simple.*"%>
 
-
 <%
 	Enumeration params = request.getParameterNames();
 
@@ -17,16 +16,42 @@
 	
 	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
 	
+	String movie_type = request.getParameter("movie_type");
+	String genre_name = request.getParameter("genre_name");
+	String version_country = request.getParameter("version_country");
+
+	if(movie_type == null)
+		movie_type = "";
+	if(genre_name == null)
+		genre_name = "";
+	if(version_country == null)
+		version_country = "";
 	try {
 		String id = accountInfo.getId();
 		String pw = accountInfo.getPw();
-		System.out.println("getEntireVideo: id:" + id + " / pw: " + pw);
+		System.out.println("getConditionSearchVideo: id:" + id + " / pw: " + pw);
 		
-		String sql = "select movie_register_no, movie_title from movie" +
-                " where movie_register_no not in (" +
+		String sql = "select v.version_identification_no, v.version_country, v.version_name from movie m, category c, version v" +
+                " where m.movie_register_no = c.movie_register_no" +
+                " and m.movie_register_no = v.movie_register_no";
+		
+		if (!movie_type.equals("")) {
+            sql += " and m.movie_type = '" + movie_type + "'";
+        }
+		
+		if (!genre_name.equals("")) {
+            sql += " and c.genre_name = '" + genre_name + "'";
+        }
+		
+		if (!version_country.equals("")) {
+            sql += " and v.version_country = '" + version_country + "'";
+        }
+		
+		sql += " and m.movie_register_no not in (" +
                 " select movie_register_no from write_rate" +
                 " where account_id = '" + id + "'" +
-                ") order by movie_register_no";
+                ") order by m.movie_register_no";
+        System.out.println("sql: " + sql);
 		
 		db.connectToDB();
         rs = db.executeQuery(sql);
@@ -44,11 +69,15 @@
         JSONArray rs_data = new JSONArray();
         while (rs.next()) {
         	JSONObject rs_row = new JSONObject();
+        	
             int rs1 = rs.getInt(1);
             String rs2 = rs.getString(2);
-            //System.out.printf("등록번호: %d / 제목: %s\n", rs1, rs2);
-            rs_row.put("movie_register_no", rs1);
-            rs_row.put("movie_title", rs2);
+            String rs3 = rs.getString(3);
+            //System.out.printf("등록번호: %d / 제목: %s / 국가: %s / 버전명: %s\n", rs1, rs2, rs3, rs4);
+            
+            rs_row.put("version_identification_no", rs1);
+            rs_row.put("version_country", rs2);
+            rs_row.put("version_name", rs3);
             rs_data.add(rs_row);
         }
         System.out.println();
@@ -57,15 +86,14 @@
                 
         data.put("data", rs_data);
         response.setContentType("application/json");
-        System.out.println("getEntireVideo: data: " + data);
+        System.out.println("getConditionSearchVideo: data: " + data);
         out.print(data.toJSONString());
         
 	} catch (SQLException e) {
-		System.out.println("getEntireVideo: e: " + e);
+		System.out.println("getConditionSearchVideo: e: " + e);
 		session.invalidate();
 		e.printStackTrace();
     } finally {
         db.closeConnDB();
     }
 %>
-
