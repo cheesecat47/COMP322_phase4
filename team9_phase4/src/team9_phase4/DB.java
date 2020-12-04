@@ -16,7 +16,8 @@ public class DB {
 //        System.out.println("DB: connectToDB");
 
         try {
-            String URL = "jdbc:oracle:thin:@localhost:16000:xe";
+            //String URL = "jdbc:oracle:thin:@localhost:16000:xe";
+            String URL = "jdbc:oracle:thin:@localhost:1521:orcl";
             String USER = "team9";
             String USER_PW = "dbteam9";
 
