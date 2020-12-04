@@ -5,6 +5,16 @@
 
 ---
 
+## Environment
+Name | Version | Link  
+:---: | :---: | :---:  
+Eclipse EE | 2019-12 | [link](https://www.eclipse.org/downloads/packages/release/kepler/sr2/eclipse-ide-java-ee-developers)
+Tomcat | 9 | [link](https://tomcat.apache.org/download-90.cgi)  
+Oracle | 11g | [link](https://hub.docker.com/repository/docker/cheesecat47/comp322_phase4)  
+DataTables | 1.10.22 | [link](https://datatables.net/)
+
+---
+
 ## How to Use
 ```bash
 $ git clone https://github.com/cheesecat47/COMP322_phase4.git
@@ -12,15 +22,16 @@ $ cd COMP322_phase4
 ```
 
 ### Frontend  
-* Tomcat  
-* Datatables  
+ 
 
 ### Backend  
-Name | Version | Link  
-:---: | :---: | :---:  
-Eclipse EE | 2019-12 | [link](https://www.eclipse.org/downloads/packages/release/kepler/sr2/eclipse-ide-java-ee-developers)
-Tomcat | 9 | [link](https://tomcat.apache.org/download-90.cgi)  
-Oracle | 11g | [link](https://hub.docker.com/repository/docker/cheesecat47/comp322_phase4)  
+* Change DB Connection Info.
+```Java
+// line 19~21
+String URL = "jdbc:oracle:thin:@[host]:[sid]";
+String USER = "[user]";
+String USER_PW = "[password]";
+```
 
 ---
 

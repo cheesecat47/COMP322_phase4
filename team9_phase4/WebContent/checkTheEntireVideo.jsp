@@ -20,7 +20,7 @@
 	
 	<div class="container">
 		<div class="row justify-content-center">
-			<div class="col-10 mx-auto">
+			<div class="col-12 mx-auto">
 				<table id="datatables" class="display">
 					<thead>
 						<tr>
