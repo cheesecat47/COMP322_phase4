@@ -5,7 +5,7 @@
 <%@include file="./include/header.jsp"%>
 <body>
 <div class="container" style="margin-top:100px;">
-    <form action="./beforeLogin.jsp" method="POST" name="signUpForm" enctype="multipart/form-data" >
+    <form action="./process/signUpProcess.jsp" method="POST" name="signUpForm">
 
         <div class="form-group row">
             <label for="joinInputId" class="col-sm-3 col-form-label">아이디</label>
@@ -46,8 +46,8 @@
             <label for="joinControlSelectSex" class="col-sm-3 col-form-label">성별</label>
             <div class="col-sm-9">
 	            <select name="sex" class="form-control" id="joinControlSelectSex">
-	                <option value="male">남성</option>
-	                <option value="female">여성</option>
+	                <option value="m">남성</option>
+	                <option value="f">여성</option>
             	</select>
             </div>
         </div>
@@ -62,7 +62,7 @@
         <div class="form-group row">
             <label for="joinInputPhoneNumber" class="col-sm-3 col-form-label">전화번호</label>
             <div class="col-sm-9">
-            	<input required name="phone" type="phoneNumber" class="form-control" id="joinInputPhoneNumber" placeholder="전화번호를 입력하세요">
+            	<input required name="phone" type="phoneNumber" class="form-control" id="joinInputPhoneNumber" placeholder="123-4567">
             </div>
         </div>
         
