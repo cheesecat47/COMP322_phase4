@@ -12,6 +12,7 @@
 	ResultSet rs = null;
 	DB db = new DB();
 	JSONObject data = new JSONObject();
+	JSONArray rs_data = new JSONArray();
 	
 	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
 	
@@ -35,7 +36,6 @@
         }
         rs.beforeFirst();
 
-        JSONArray rs_data = new JSONArray();
         while (rs.next()) {
         	JSONObject rs_row = new JSONObject();
         	String rs1 = rs.getString(1);
@@ -53,16 +53,15 @@
         System.out.println(rowCount + "개의 평가 내역 검색이 완료되었습니다.");
         System.out.println();
                 
-        data.put("data", rs_data);
-        response.setContentType("application/json");
-        System.out.println("getMyEvaluation: data: " + data);
-        out.print(data.toJSONString());
-        
 	} catch (SQLException e) {
 		System.out.println("getMyEvaluation: e: " + e);
 		e.printStackTrace();
     } finally {
         db.closeConnDB();
+        data.put("data", rs_data);
+        response.setContentType("application/json");
+        System.out.println("getMyEvaluation: data: " + data);
+        out.print(data.toJSONString());
     }
 %>
 
