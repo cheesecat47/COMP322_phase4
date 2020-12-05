@@ -4,6 +4,7 @@
 <html>
 <%@include file="./include/header.jsp"%>
 <body>
+	<%@include file="./include/isManager.jsp"%>
 	<%@include file="./include/afterLogin.jsp"%>
 	<%@include file="./include/evaluationRelatedFunctions.jsp"%>
 	<br>
