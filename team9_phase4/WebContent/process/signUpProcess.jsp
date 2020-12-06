@@ -17,6 +17,11 @@
 	String account_phone = request.getParameter("phone");
 	String account_job = request.getParameter("job");
 
+	if (account_pw.equals(checkPw)) {
+        System.out.println("비밀번호 확인이 일치하지 않습니다.");
+        return;
+    }
+	
 	boolean flag = false;
 	CheckFormats chk = new CheckFormats();
 	

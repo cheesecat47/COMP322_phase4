@@ -16,7 +16,7 @@
 	            <div class="col-sm-7">
 	            	<input required autofocus name="title" type="text" class="form-control">
 	            </div>
-	        	<button onclick="getData()" class="btn btn-primary col-sm-2 mb-2">검색</button>
+	        	<button id="searchBtn" class="btn btn-primary col-sm-2 mb-2">검색</button>
 	        </div>
 	    </form>
 		
@@ -39,19 +39,26 @@
 	</div>
 	
 	<script type="text/javascript">
+		// https://electronic-moongchi.tistory.com/82
+		function getParam(sname) {
+			var params = location.search.substr(location.search.indexOf("?") + 1);
+			var sval = "";
+			params = params.split("&");
+			for (var i = 0; i < params.length; i++) {
+				temp = params[i].split("=");
+				if ([temp[0]] == sname) { sval = temp[1]; }
+			}
+			return sval;
+		};
+	
 		$(document).ready( function () {
-			$('#datatables').hide();
-		});
-		
-		function getData() {
-			$('#datatables').show();
-			
 			var form = document.videoTitleSearchForm;
             var title = form.title.value;
             
-            var data = { "title": title };
+            var data = { "title": getParam("title") || title };
+            console.log("data: ", data);
 			
-			$('#datatables').DataTable({
+			let table = $('#datatables').DataTable({
 				//serverSide: true,
 				stateSave: true,
 				searching: false,
@@ -64,8 +71,13 @@
 					{ data: "movie_register_no" },
 					{ data: "movie_title" }
 				]
-			});			
-		};
+			});	
+			
+			
+			$("searchBtn").on("click", function () {
+				table.ajax.reload();
+			})
+		});
 	</script>
 </body>
 </html>

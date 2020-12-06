@@ -14,13 +14,13 @@
 	ResultSet rs = null;
 	DB db = new DB();
 	JSONObject data = new JSONObject();
+	JSONArray rs_data = new JSONArray();
 	
 	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
 	
 	try {
 		String id = accountInfo.getId();
-		String pw = accountInfo.getPw();
-		System.out.println("getEntireVideo: id:" + id + " / pw: " + pw);
+		System.out.println("getEntireVideo: id:" + id);
 		
 		String sql = "select movie_register_no, movie_title from movie" +
                 " where movie_register_no not in (" +
@@ -41,7 +41,6 @@
         }
         rs.beforeFirst();
 
-        JSONArray rs_data = new JSONArray();
         while (rs.next()) {
         	JSONObject rs_row = new JSONObject();
             int rs1 = rs.getInt(1);
@@ -55,17 +54,15 @@
         System.out.println(rowCount + "개의 영상물 검색이 완료되었습니다.");
         System.out.println();
                 
+	} catch (SQLException e) {
+		System.out.println("getEntireVideo: e: " + e);
+		e.printStackTrace();
+    } finally {
+        db.closeConnDB();
         data.put("data", rs_data);
         response.setContentType("application/json");
         System.out.println("getEntireVideo: data: " + data);
         out.print(data.toJSONString());
-        
-	} catch (SQLException e) {
-		System.out.println("getEntireVideo: e: " + e);
-		session.invalidate();
-		e.printStackTrace();
-    } finally {
-        db.closeConnDB();
     }
 %>
 
