@@ -23,10 +23,6 @@
 			</div>
 		</div>
 	</div>
-	<br>
-	<div id = "footer">
-		<%@include file="./include/registrationNumberSearch.jsp"%>
-	</div>
 	
 	<script type="text/javascript">
 		$(document).ready( function () {

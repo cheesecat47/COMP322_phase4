@@ -55,7 +55,6 @@
                 
 	} catch (SQLException e) {
 		System.out.println("getVideoTitle: e: " + e);
-		session.invalidate();
 		e.printStackTrace();
     } finally {
         db.closeConnDB();
