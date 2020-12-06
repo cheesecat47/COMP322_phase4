@@ -4,10 +4,13 @@
 <%@ page import="team9_phase4.AccountInfo" %>
 <%@ page import="team9_phase4.CheckFormats" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
 
 <%
 	request.setCharacterEncoding("utf-8");
-	String account_id = request.getParameter("id");
+	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
+	String id = accountInfo.getId();
+
 	String account_pw = request.getParameter("pw");
 	String checkPw = request.getParameter("checkPw");
 	String account_name = request.getParameter("name");
@@ -17,58 +20,77 @@
 	String account_phone = request.getParameter("phone");
 	String account_job = request.getParameter("job");
 
+	if (!account_pw.equals(checkPw)) {
+        System.out.println("비밀번호 확인이 일치하지 않습니다.");
+        return;
+    }
+	
+	String sql = "update account set ";
+    ArrayList<String> toBeUpdated = new ArrayList<>();
+	
 	CheckFormats chk = new CheckFormats();
 	
-	// 필수 항목 검사
-    if (account_id.equals("") || account_pw.equals("")
-            || account_name.equals("") || account_phone.equals("")) {
-        System.out.println("필수 항목을 입력하지 않았습니다.");
-        return;
+	if (!account_name.equals("")) {
+        toBeUpdated.add("account_name = '" + account_name + "'");
+        accountInfo.setName(account_name);
     }
 	
- 	// 생년월일 포맷 검사
-    if (!chk.checkDateFormat(account_bday)) {
-        System.out.println("생년월일을 형식에 맞게 입력해주세요.");
-        /* return; */
+	if (!account_bday.equals("")) {
+        // 생년월일 입력했는데 포맷 안 맞으면 변경 불가
+        if (!chk.checkDateFormat(account_bday)) {
+            System.out.println("생년월일을 형식에 맞게 입력해주세요.");
+            return;
+        }
+        toBeUpdated.add("account_bday = TO_DATE('" + account_bday + "', 'yyyy-mm-dd')");
+        accountInfo.setBday(account_bday);
+    }
+	
+    if (!chk.checkSex(account_sex).equals("null")) {
+        toBeUpdated.add("account_sex = '" + account_sex + "'");
+        accountInfo.setSex(account_sex);
+    }
+    
+    if (!account_address.equals("")) {
+        toBeUpdated.add("account_address = '" + account_address + "'");
+        accountInfo.setAddr(account_address);
     }
  	
- 	// 전화번호 포맷 검사
-    if (!chk.checkPhoneFormat(account_phone)) {
-        System.out.println("전화번호를 형식에 맞게 입력해주세요.");
-        return;
+    if (!account_phone.equals("")) {
+        // 전화번호 입력했는데 포맷 안 맞으면 변경 불가
+        if (!chk.checkPhoneFormat(account_phone)) {
+            System.out.println("전화번호를 형식에 맞게 입력해주세요.");
+            return;
+        }
+        toBeUpdated.add("account_phone = '" + account_phone + "'");
+        accountInfo.setPhone(account_phone);
     }
-
-	System.out.println("아이디: " + account_id);
-    System.out.println("비밀번호: " + account_pw);
-    System.out.println("이름: " + account_name);
-    System.out.println("생년월일: " + account_bday);
-    System.out.println("성별: " + account_sex);
-    System.out.println("주소: " + account_address);
-    System.out.println("전화번호: " + account_phone);
-    System.out.println("직업: " + account_job);
 	
+    if (!account_job.equals("")) {
+        toBeUpdated.add("account_job = '" + account_job + "'");
+        accountInfo.setJob(account_job);
+    }
+    
+	//  System.out.println("toBeUpdated: " + toBeUpdated);
+	String toBeUpdatedStr = String.join(", ", toBeUpdated);
+	//  System.out.println("toBeUpdatedStr: " + toBeUpdatedStr);
+	sql += toBeUpdatedStr + " where account_id = '" + id + "'";
+	/* System.out.println("sql: " + sql); */
+    
 	ResultSet rs = null;
 	DB db = new DB();
 
-	try {	
-		String sql = "insert into account values ('" + account_id
-                + "', '" + account_pw + "', '" + account_name
-                + "', TO_DATE('" + account_bday + "', 'yyyy-mm-dd'), '"
-                + account_sex + "', '" + account_address + "', '"
-                + account_phone + "', 'customer', '" + account_job
-                + "', 'Basic')";
-		
+	try {
 		db.connectToDB();
 		db.executeUpdate(sql);
 		
-		System.out.println("회원 가입이 완료되었습니다.");
+		System.out.println("회원 정보 수정이 완료되었습니다.");
         db.commit();
     } catch (SQLException e) {
         db.rollback();
         e.printStackTrace();
+        System.err.println("회원 정보 수정 중 오류가 발생했습니다.");
     } finally {
         db.closeConnDB();
-        response.sendRedirect("../beforeLogin.jsp");
+		session.setAttribute("accountInfo", accountInfo);
     }
 %>
-
