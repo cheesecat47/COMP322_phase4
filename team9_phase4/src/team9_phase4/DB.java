@@ -127,4 +127,52 @@ public class DB {
             throw e;
         }
     }
+    
+    
+    public String getAllKind(String attr, String table) {
+        String return_str;
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            String get_sql = "select distinct " + attr + " from " + table;
+            connectToDB();
+            ResultSet rs = executeQuery(get_sql);
+
+            while (rs.next()) {
+                list.add(rs.getString(1));
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnDB();
+        }
+
+        return_str = String.join(", ", list);
+//        System.out.println("getAllKind: return_str: " + return_str);
+        return return_str;
+    }
+    
+    
+    public int getMaxIdNo(String attr, String table) {
+        int res = 0;
+        try {
+            String get_sql = "select max(" + attr + ") from " + table;
+            connectToDB();
+            ResultSet rs = executeQuery(get_sql);
+
+            if (rs.next()) {
+                res = rs.getInt(1);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnDB();
+        }
+
+//        System.out.println("getMaxIdNo: res: " + res);
+        return res;
+    }
 }
