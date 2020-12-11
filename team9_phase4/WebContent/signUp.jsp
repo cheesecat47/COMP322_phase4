@@ -8,44 +8,44 @@
     <form action="./process/signUpProcess.jsp" method="POST" name="signUpForm">
 
         <div class="form-group row">
-            <label for="joinInputId" class="col-sm-3 col-form-label">아이디</label>
+            <label class="col-sm-3 col-form-label">아이디</label>
             <div class="col-sm-9">
-            	<input required autofocus name="id" type="text" class="form-control" id="joinInputId" placeholder="아이디">
+            	<input required autofocus name="id" type="text" class="form-control" placeholder="아이디">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="joinInputPw" class="col-sm-3 col-form-label">비밀번호</label>
+            <label class="col-sm-3 col-form-label">비밀번호</label>
             <div class="col-sm-9">
-            	<input required name="pw" type="password" class="form-control" id="joinInputPw" placeholder="비밀번호">
+            	<input required name="pw" type="password" class="form-control" placeholder="비밀번호">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="joinInputPwConfirm" class="col-sm-3 col-form-label">비밀번호 확인</label>
+            <label class="col-sm-3 col-form-label">비밀번호 확인</label>
             <div class="col-sm-9">
-            	<input required name="checkPw" type="password" class="form-control" id="joinInputPwConfirm" placeholder="비밀번호 확인">
+            	<input required name="checkPw" type="password" class="form-control" placeholder="비밀번호 확인">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="joinInputName" class="col-sm-3 col-form-label">이름</label>
+            <label class="col-sm-3 col-form-label">이름</label>
             <div class="col-sm-9">
-            	<input required name="name" type="name" class="form-control" id="joinInputName" placeholder="이름을 입력하세요">
+            	<input required name="name" type="name" class="form-control" placeholder="이름을 입력하세요">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="joinInputBday" class="col-sm-3 col-form-label">생년월일</label>
+            <label class="col-sm-3 col-form-label">생년월일</label>
             <div class="col-sm-9">
-            	<input name="bday" type="bday" class="form-control" id="joinInputBday" placeholder="yyyy-mm-dd">
+            	<input name="bday" type="bday" class="form-control" placeholder="yyyy-mm-dd">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="joinControlSelectSex" class="col-sm-3 col-form-label">성별</label>
+            <label class="col-sm-3 col-form-label">성별</label>
             <div class="col-sm-9">
-	            <select name="sex" class="form-control" id="joinControlSelectSex">
+	            <select name="sex" class="form-control">
 	                <option value="m">남성</option>
 	                <option value="f">여성</option>
             	</select>
@@ -53,23 +53,23 @@
         </div>
 
         <div class="form-group row">
-            <label for="joinInputAddress" class="col-sm-3 col-form-label">주소</label>
+            <label class="col-sm-3 col-form-label">주소</label>
             <div class="col-sm-9">
-            	<input name="address" type="address" class="form-control" id="joinInputAddress" placeholder="주소를 입력하세요">
+            	<input name="address" type="address" class="form-control" placeholder="주소를 입력하세요">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="joinInputPhoneNumber" class="col-sm-3 col-form-label">전화번호</label>
+            <label class="col-sm-3 col-form-label">전화번호</label>
             <div class="col-sm-9">
-            	<input required name="phone" type="phoneNumber" class="form-control" id="joinInputPhoneNumber" placeholder="123-4567">
+            	<input required name="phone" type="phoneNumber" class="form-control" placeholder="123-4567">
             </div>
         </div>
         
         <div class="form-group row">
-            <label for="joinInputJob" class="col-sm-3 col-form-label">직업</label>
+            <label class="col-sm-3 col-form-label">직업</label>
             <div class="col-sm-9">
-            	<input name="job" type="job" class="form-control" id="joinInputJob" placeholder="직업을 입력하세요">
+            	<input name="job" type="job" class="form-control" placeholder="직업을 입력하세요">
             </div>
         </div>
 
