@@ -3,55 +3,35 @@
 <%@ page import="team9_phase4.DB" %>
 <%@ page import="team9_phase4.AccountInfo" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.util.Enumeration"%>
 
 <%@ page import="org.json.simple.*"%>
 
 <%
-	Enumeration params = request.getParameterNames();
+	request.setCharacterEncoding("utf-8");
+	String type = request.getParameter("type");
+	String genre = request.getParameter("genre");
+	String country = request.getParameter("country");
+	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
+	String id = accountInfo.getId();
 
 	ResultSet rs = null;
 	DB db = new DB();
 	JSONObject data = new JSONObject();
-	
-	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
-	
-	String movie_type = request.getParameter("movie_type");
-	String genre_name = request.getParameter("genre_name");
-	String version_country = request.getParameter("version_country");
+	JSONArray rs_data = new JSONArray();
 
-	if(movie_type == null)
-		movie_type = "";
-	if(genre_name == null)
-		genre_name = "";
-	if(version_country == null)
-		version_country = "";
 	try {
-		String id = accountInfo.getId();
-		String pw = accountInfo.getPw();
-		System.out.println("getConditionSearchVideo: id:" + id + " / pw: " + pw);
+		System.out.println("getConditionSearchVideo: id:" + id + " / type: " + type + " / genre: " + genre + " / country: " + country);
 		
 		String sql = "select v.version_identification_no, v.version_country, v.version_name from movie m, category c, version v" +
                 " where m.movie_register_no = c.movie_register_no" +
-                " and m.movie_register_no = v.movie_register_no";
-		
-		if (!movie_type.equals("")) {
-            sql += " and m.movie_type = '" + movie_type + "'";
-        }
-		
-		if (!genre_name.equals("")) {
-            sql += " and c.genre_name = '" + genre_name + "'";
-        }
-		
-		if (!version_country.equals("")) {
-            sql += " and v.version_country = '" + version_country + "'";
-        }
-		
-		sql += " and m.movie_register_no not in (" +
+                " and m.movie_register_no = v.movie_register_no" +
+				" and m.movie_type = '" + type + "'" +
+				" and c.genre_name = '" + genre + "'" +
+				" and v.version_country = '" + country + "'" +
+				" and m.movie_register_no not in (" +
                 " select movie_register_no from write_rate" +
                 " where account_id = '" + id + "'" +
                 ") order by m.movie_register_no";
-        System.out.println("sql: " + sql);
 		
 		db.connectToDB();
         rs = db.executeQuery(sql);
@@ -66,14 +46,13 @@
         }
         rs.beforeFirst();
 
-        JSONArray rs_data = new JSONArray();
         while (rs.next()) {
         	JSONObject rs_row = new JSONObject();
         	
             int rs1 = rs.getInt(1);
             String rs2 = rs.getString(2);
             String rs3 = rs.getString(3);
-            //System.out.printf("등록번호: %d / 제목: %s / 국가: %s / 버전명: %s\n", rs1, rs2, rs3, rs4);
+            //System.out.printf("버전 번호: %d / 국가: %s / 버전명: %s\n", rs1, rs2, rs3);
             
             rs_row.put("version_identification_no", rs1);
             rs_row.put("version_country", rs2);
@@ -83,17 +62,16 @@
         System.out.println();
         System.out.println(rowCount + "개의 영상물 검색이 완료되었습니다.");
         System.out.println();
-                
-        data.put("data", rs_data);
-        response.setContentType("application/json");
-        System.out.println("getConditionSearchVideo: data: " + data);
-        out.print(data.toJSONString());
-        
+
 	} catch (SQLException e) {
 		System.out.println("getConditionSearchVideo: e: " + e);
 		session.invalidate();
 		e.printStackTrace();
     } finally {
         db.closeConnDB();
+        data.put("data", rs_data);
+        response.setContentType("application/json");
+        System.out.println("getConditionSearchVideo: data: " + data);
+        out.print(data.toJSONString());
     }
 %>
