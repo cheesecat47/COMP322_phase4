@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" %>
 <!DOCTYPE html>
-<style>
-	#footer {
-
-    bottom:0;
-
-    width:100%;
-
-    height:70px;   
-}
-</style>
 <html>
 <%@include file="./include/header.jsp"%>
 <body>
@@ -24,40 +14,52 @@
 				<table id="datatables" class="display">
 					<thead>
 						<tr>
-							<th>영상물 등록 번호</th>
+							<th>등록 번호</th>
 							<th>영상물 제목</th>
+							<th>영상물 종류</th>
+							<th>상영 시간(분)</th>
+							<th>상영 날짜</th>
+							<th>장르</th>
+							<th>평점</th>
 						</tr>
 					</thead>
 				</table>
 			</div>
-			<p class="justify-content-center">행을 선택하면 세부 정보를 검색합니다.</p>
 		</div>
 	</div>
 	
 	<script type="text/javascript">
+		function getParam(sname) {
+			var params = location.search.substr(location.search.indexOf("?") + 1);
+			var sval = "";
+			params = params.split("&");
+			for (var i = 0; i < params.length; i++) {
+				temp = params[i].split("=");
+				if ([temp[0]] == sname) { sval = temp[1]; }
+			}
+			return sval;
+		};
+	
 		$(document).ready( function () {
 			let table = $('#datatables').DataTable({
 				//serverSide: true,
 				stateSave: true,
 				searching: false,
+				paging: false,
 				info: false,
 				ajax: {
-					url: './process/getEntireVideo.jsp'
+					url: './process/getVideoConditionSearchDetailsProcess.jsp?register_no=' + getParam('register_no'),
 				},
 				columns: [
 					{ data: "movie_register_no" },
-					{ data: "movie_title" }
+					{ data: "movie_title" },
+					{ data: "movie_type" },
+					{ data: "movie_runtime" },
+					{ data: "movie_start_year" },
+					{ data: "genre_name" },
+					{ data: "avg_rate" },
 				]
 			});
-			
-			// https://pjsprogram.tistory.com/51
-			$('#datatables tbody').on('click', 'tr', function() {
-				let data = table.row($(this).closest('tr')).data();
-	            // console.log('data', data);
-	            let register_no = data.movie_register_no;
-	            // console.log('register_no', register_no);
-	            location.href = 'checkVideoDetails.jsp?register_no=' + register_no;
-			})
 		});
 	</script>
 </body>
