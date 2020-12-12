@@ -92,5 +92,6 @@
     } finally {
         db.closeConnDB();
 		session.setAttribute("accountInfo", accountInfo);
+		response.sendRedirect("../memberInfoModification.jsp");
     }
 %>

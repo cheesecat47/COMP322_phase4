@@ -45,13 +45,13 @@
 	            	</select>
 			      </div>
 	        </div>
-	        <span style="float:right;">
+	        <div class="form-group row justify-content-end">
 	        	<button type="searchBtn" class="btn btn-primary mb-2">해당 조건 검색</button>
-	        </span>
+	        </div>
 		</form>
 		
 		<div class="row justify-content-center">
-			<div class="col-12 mx-auto">
+			<div class="col-12 w-100 mx-auto">
 				<table id="datatables">
 					<thead>
 						<tr>
