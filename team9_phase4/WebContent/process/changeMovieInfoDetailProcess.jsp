@@ -22,8 +22,9 @@
 	String register_no = request.getParameter("register_no");
 	
  	// 상영 년도 포맷 검사
-    if (!chk.checkDateFormat(movie_start_year)) {
+    if (!movie_start_year.equals("") && !chk.checkDateFormat(movie_start_year)) {
         System.out.println("changeMovieInfoDetailProcess: 상영 년도를 형식에 맞게 입력해주세요.");
+        response.sendRedirect("../videoInfoCorrection.jsp");
         return;
     }
  	
@@ -37,7 +38,7 @@
         change_list.add("movie_runtime=" + movie_runtime + "");
     }
     if (!movie_start_year.equals("")) {
-        change_list.add("movie_start_year=TO_DATE('" + movie_start_year + "', 'yyyy-mm-dd'))");
+        change_list.add("movie_start_year=TO_DATE('" + movie_start_year + "', 'yyyy-mm-dd')");
     }
 
 	try {	

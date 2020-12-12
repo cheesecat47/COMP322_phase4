@@ -16,6 +16,7 @@
 							<th>버전 번호</th>
 							<th>버전 국가</th>
 							<th>버전 이름</th>
+							<th>영상물 등록 번호</th>
 						</tr>
 					</thead>
 				</table>
@@ -25,6 +26,17 @@
 	</div>
 	
 	<script type="text/javascript">
+	function getParam(sname) {
+		var params = location.search.substr(location.search.indexOf("?") + 1);
+		var sval = "";
+		params = params.split("&");
+		for (var i = 0; i < params.length; i++) {
+			temp = params[i].split("=");
+			if ([temp[0]] == sname) { sval = temp[1]; }
+		}
+		return sval;
+	};
+	
 	$(document).ready( function () {
 		let table = $('#datatables').DataTable({
 			//serverSide: true,
@@ -32,12 +44,14 @@
 			searching: false,
 			info: false,
 			ajax: {
-				url: './process/~.jsp'
+				url: './process/getVideoVersions.jsp',
+				data: {"register_no": getParam('register_no')}
 			},
 			columns: [
 				{ data: "version_identification_no" },
 				{ data: "version_country" },
-				{ data: "version_name" }
+				{ data: "version_name" },
+				{ data: "movie_register_no" }
 			]
 		});
 		
