@@ -40,6 +40,7 @@
 
         if (manager_count < 2) {
             System.out.println("관리자가 본인밖에 없습니다. 탈퇴가 취소되었습니다.");
+            response.sendRedirect("../withdrawal.jsp");
             return;
         }
     }

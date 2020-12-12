@@ -62,11 +62,8 @@
 					</thead>
 				</table>
 			</div>
+			<p class="justify-content-center">행을 선택하면 세부 정보를 검색합니다.</p>
 		</div>
-	</div>
-	<br>
-	<div id = "footer">
-		<%@include file="./include/registrationNumberSearch.jsp"%>
 	</div>
 	
 	<script type="text/javascript">
@@ -105,6 +102,14 @@
 					{ data: "version_name"},
 				]
 			});
+			
+			$('#datatables tbody').on('click', 'tr', function() {
+				let data = table.row($(this).closest('tr')).data();
+	            // console.log('data', data);
+	            let register_no = data.version_identification_no;
+	            // console.log('register_no', register_no);
+	            location.href = 'checkVideoConditionSearchDetails.jsp?register_no=' + register_no;
+			})
 			
 			$("searchBtn").on("click", function () {
 				table.ajax.reload();
