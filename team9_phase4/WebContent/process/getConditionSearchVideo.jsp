@@ -9,6 +9,8 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	String type = request.getParameter("type");
+	type = type.replace("+", " ");
+	
 	String genre = request.getParameter("genre");
 	String country = request.getParameter("country");
 	AccountInfo accountInfo = (AccountInfo)session.getAttribute("accountInfo");
