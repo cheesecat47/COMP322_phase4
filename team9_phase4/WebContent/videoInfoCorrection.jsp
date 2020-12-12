@@ -47,7 +47,7 @@
 	            // console.log('data', data);
 	            let register_no = data.movie_register_no;
 	            // console.log('register_no', register_no);
-	            location.href = 'checkVideoDetails.jsp?register_no=' + register_no;
+	            location.href = 'changeMovieInfoMenu.jsp?register_no=' + register_no;
 			})
 		});
 	</script>
