@@ -17,21 +17,14 @@
 	        </div>
 	
 	        <div class="form-group row">
-	            <label class="col-sm-3 col-form-label">비밀번호 확인</label>
-	            <div class="col-sm-9">
-	            	<input required name="checkPw" type="password" class="form-control" placeholder="비밀번호 확인">
-	            </div>
-	        </div>
-	
-	        <div class="form-group row">
-	            <label class="col-sm-3 col-form-label">비밀번호</label>
+	            <label class="col-sm-3 col-form-label">새 비밀번호</label>
 	            <div class="col-sm-9">
 	            	<input required name="new_pw" type="password" class="form-control" placeholder="새 비밀번호">
 	            </div>
 	        </div>
 	
 	        <div class="form-group row">
-	            <label class="col-sm-3 col-form-label">비밀번호 확인</label>
+	            <label class="col-sm-3 col-form-label">새 비밀번호 확인</label>
 	            <div class="col-sm-9">
 	            	<input required name="new_checkPw" type="password" class="form-control" placeholder="새 비밀번호 확인">
 	            </div>

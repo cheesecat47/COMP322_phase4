@@ -26,7 +26,7 @@
 	        <div class="form-group row">
 	            <label class="col-sm-3 col-form-label">이름</label>
 	            <div class="col-sm-9">
-	            	<input required name="name" type="name" class="form-control" placeholder="이름을 입력하세요">
+	            	<input name="name" type="name" class="form-control" placeholder="이름을 입력하세요">
 	            </div>
 	        </div>
 	
@@ -57,7 +57,7 @@
 	        <div class="form-group row">
 	            <label class="col-sm-3 col-form-label">전화번호</label>
 	            <div class="col-sm-9">
-	            	<input required name="phone" type="phoneNumber" class="form-control" placeholder="123-4567">
+	            	<input name="phone" type="phoneNumber" class="form-control" placeholder="123-4567">
 	            </div>
 	        </div>
 	        
