@@ -32,13 +32,13 @@
 	// 필수 항목 검사
     if (movie_title.equals("") || movie_type.equals("")
             || movie_runtime.equals("") || movie_start_year.equals("") || genre_name.equals("")) {
-        System.out.println("registerNewVideoProcess: 필수 항목을 입력하지 않았습니다.");
+        System.out.println("changeMovieInfoDetailProcess: 필수 항목을 입력하지 않았습니다.");
         return;
     }
 	
  	// 상영 년도 포맷 검사
     if (!chk.checkDateFormat(movie_start_year)) {
-        System.out.println("registerNewVideoProcess: 상영 년도를 형식에 맞게 입력해주세요.");
+        System.out.println("changeMovieInfoDetailProcess: 상영 년도를 형식에 맞게 입력해주세요.");
         return;
     }
 
@@ -48,14 +48,14 @@
                 + this_movie_id + ", '" + movie_title + "', '"
                 + movie_type + "', " + movie_runtime
                 + ", TO_DATE('" + movie_start_year + "', 'yyyy-mm-dd'))";
-		System.out.println("registerNewVideoProcess: sql: " + sql);
+		System.out.println("changeMovieInfoDetailProcess: sql: " + sql);
 		
 		db.connectToDB();
 		db.executeUpdate(sql);
 		
 		sql = "insert into category values ('" + genre_name +
                 "', " + this_movie_id + ")";
-        System.out.println("registerNewVideoProcess: sql: " + sql);
+        System.out.println("changeMovieInfoDetailProcess: sql: " + sql);
         
         db.executeUpdate(sql);
 		
@@ -63,7 +63,7 @@
                 ", '" + version_country +
                 "', '" + version_title +
                 "', " + this_movie_id + ")";
-        System.out.println("registerNewVideoProcess: sql: " + sql);
+        System.out.println("changeMovieInfoDetailProcess: sql: " + sql);
 
         db.executeUpdate(sql);
         
@@ -71,19 +71,19 @@
             sql = "insert into episode values (" + max_episode_no +
                     ", '" + episode_name +
                     "', " + this_movie_id + ")";
-            System.out.println("registerNewVideoProcess: sql: " + sql);
+            System.out.println("changeMovieInfoDetailProcess: sql: " + sql);
 
             db.executeUpdate(sql);
         }
         
-        System.out.println("registerNewVideoProcess: 영상물 등록이 완료되었습니다.");
+        System.out.println("changeMovieInfoDetailProcess: 영상물 등록이 완료되었습니다.");
         db.commit();
     } catch (SQLException e) {
         db.rollback();
         e.printStackTrace();
     } finally {
         db.closeConnDB();
-        response.sendRedirect("../registerNewVideo.jsp");
+        response.sendRedirect("../videoInfoCorrection.jsp");
     }
 %>
 
