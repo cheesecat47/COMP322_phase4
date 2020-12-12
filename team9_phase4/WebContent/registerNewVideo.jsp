@@ -10,7 +10,7 @@
 	
 	<br>
 	<div class="container">
-		<form name="registerNewVideoForm">
+		<form action="./process/registerNewVideoProcess.jsp" method="POST" name="registerNewVideoForm">
 		
 				<div class="form-group row">
 		            <label class="col-sm-3 col-form-label">새 영상물 정보 입력</label>
