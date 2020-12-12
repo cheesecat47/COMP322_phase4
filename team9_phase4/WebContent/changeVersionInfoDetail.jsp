@@ -10,7 +10,7 @@
 	<div class="container">
 		<form action="./process/~.jsp" method="POST" name="changeVersionInfoForm">
 			<div class="form-group row">
-	            <label class="col-sm-3 col-form-label">새 버전 정보 입력</label>
+	            <label class="col-sm-3 col-form-label">버전 정보 수정</label>
 	        </div>
 	        
 			<div class="form-group row">
