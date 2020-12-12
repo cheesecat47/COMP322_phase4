@@ -26,7 +26,7 @@
 				<div class="form-group row">
 				   <label class="col-sm-3 col-form-label">영상물 종류: </label>
 			       <div class="col-sm-9">
-				       	<select name="movie_type" class="form-control">
+				       	<select id="movie_type_select" name="movie_type" class="form-control">
 			                <option value="Movie">Movie</option>
 			                <option value="TV Series">TV Series</option>
 			                <option value="KnuMovieDB Original">KnuMovieDB Original</option>
@@ -85,15 +85,17 @@
 		        </div>
 		        
 		        <br>
-				<div class="form-group row">
-		            <label class="col-sm-3 col-form-label">새 에피소드 정보 입력</label>
-		        </div>
-		        
-		        <div class="form-group row">
-		            <label class="col-sm-3 col-form-label">에피소드 이름: </label>
-		            <div class="col-sm-9">
-		            	<input required name="episode_name" type="text" class="form-control" placeholder="에피소드 이름">
-		            </div>
+		        <div id="episode_info_div">
+					<div class="form-group row">
+			            <label class="col-sm-3 col-form-label">새 에피소드 정보 입력</label>
+			        </div>
+			        
+			        <div class="form-group row">
+			            <label class="col-sm-3 col-form-label">에피소드 이름: </label>
+			            <div class="col-sm-9">
+			            	<input name="episode_name" type="text" class="form-control" placeholder="에피소드 이름">
+			            </div>
+			        </div>
 		        </div>
 		        
 		        <div class="form-group row justify-content-end">
@@ -101,5 +103,26 @@
 		        </div>
 			</form>
 		</div>
+		
+	<script>
+		let movie_type_select;
+		
+		function checkMovieType() {
+			if (movie_type_select.value == "TV Series"){
+				$("#episode_info_div").show();
+			} else {
+				$("#episode_info_div").hide();
+			}
+		}
+		
+		$(document).ready( function () {
+			movie_type_select = document.getElementById("movie_type_select");
+			checkMovieType()
+			
+			movie_type_select.addEventListener("change", function() {
+				checkMovieType();
+			})
+		});
+	</script>
 </body>
 </html>
