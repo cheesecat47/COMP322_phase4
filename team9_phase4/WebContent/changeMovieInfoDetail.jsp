@@ -8,7 +8,7 @@
 	<%@include file="./include/administratorFunctions.jsp"%>
 	<br>
 	<div class="container">
-		<form action="./process/~.jsp" method="POST" name="changeMovieInfoForm">
+		<form method="POST" name="changeMovieInfoForm">
 			<div class="form-group row">
 	            <label class="col-sm-3 col-form-label">영상물 정보 수정</label>
 	        </div>
@@ -16,7 +16,7 @@
 	        <div class="form-group row">
 	            <label class="col-sm-3 col-form-label">영상물 제목: </label>
 	            <div class="col-sm-9">
-	            	<input required name="movie_title" type="text" class="form-control" placeholder="영상물 제목">
+	            	<input name="movie_title" type="text" class="form-control" placeholder="영상물 제목">
 	            </div>
 	        </div>
 	        
@@ -34,14 +34,14 @@
 			<div class="form-group row">
 	            <label class="col-sm-3 col-form-label">상영 시간: </label>
 	            <div class="col-sm-9">
-	            	<input required name="movie_runtime" type="text" class="form-control" placeholder="단위: 분">
+	            	<input name="movie_runtime" type="text" class="form-control" placeholder="단위: 분">
 	            </div>
 	        </div>
 	        
 	        <div class="form-group row">
 	            <label class="col-sm-3 col-form-label">상영 년도: </label>
 	            <div class="col-sm-9">
-	            	<input required name="movie_start_year" type="text" class="form-control" placeholder="yyyy-mm-dd">
+	            	<input name="movie_start_year" type="text" class="form-control" placeholder="yyyy-mm-dd">
 	            </div>
 	        </div>
 	        
@@ -59,9 +59,33 @@
 			</div>
 			
 	        <div class="form-group row justify-content-end">
-	        	<button type="editBtn" class="btn btn-primary mb-2">영상물 정보 수정</button>
+	        	<button id="editBtn" class="btn btn-primary mb-2">영상물 정보 수정</button>
 	        </div>
 		</form>
 	</div>
+	
+	<script type="text/javascript">
+		function getParam(sname) {
+			var params = location.search.substr(location.search.indexOf("?") + 1);
+			var sval = "";
+			params = params.split("&");
+			for (var i = 0; i < params.length; i++) {
+				temp = params[i].split("=");
+				if ([temp[0]] == sname) { sval = temp[1]; }
+			}
+			return sval;
+		};
+		
+		// action="./process/changeMovieInfoDetailProcess.jsp"
+		$(document).ready( function () {
+			let btn = document.getElementById("editBtn");
+			btn.addEventListener('click', function() {
+				let form = document.changeMovieInfoForm;
+				console.log('changeMovieInfoDetail: form: ', form);
+				form.action = "./process/changeMovieInfoDetailProcess.jsp?register_no=" + getParam('register_no');
+				form.submit();
+			})
+		});
+	</script>
 </body>
 </html>

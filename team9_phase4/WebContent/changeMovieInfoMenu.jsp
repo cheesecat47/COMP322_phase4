@@ -29,13 +29,13 @@
 	</div>
 	
 	<div class="text-center mt-4">
-		<button onclick="location='changeMovieInfoDetail.jsp'" style="width:12%" class="btn btn-outline-secondary">영상물 정보 수정</button>
+		<button onclick="onClickHandler('changeMovieInfoDetail')" class="btn btn-outline-secondary">영상물 정보 수정</button>
 	
-		<button onclick="location='deleteMovie.jsp'" style="width:12%" class="btn btn-outline-secondary">영상물 삭제</button>
+		<button onclick="onClickHandler('deleteMovie')" class="btn btn-outline-secondary">영상물 삭제</button>
 		
-		<button onclick="location='changeVersionInfo.jsp'" style="width:12%" class="btn btn-outline-secondary">버전 정보 수정</button>
+		<button onclick="onClickHandler('changeVersionInfo')" class="btn btn-outline-secondary">버전 정보 수정</button>
 		
-		<button onclick="location='changeEpisodeInfo.jsp'" style="width:12%" class="btn btn-outline-secondary">에피소드 수정</button>
+		<button id="episodeBtn" onclick="onClickHandler('changeEpisodeInfo')" class="btn btn-outline-secondary">에피소드 수정</button>
 	</div>
 	
 	<script type="text/javascript">
@@ -49,6 +49,26 @@
 			}
 			return sval;
 		};
+		
+		function onClickHandler(str) {
+			console.log('onClickHandler: str: ', str);
+			let register_no = getParam('register_no');
+			console.log('onClickHandler: register_no: ', register_no);
+			switch(str) {
+				case "changeMovieInfoDetail":
+					location.href = 'changeMovieInfoDetail.jsp?register_no=' + register_no;
+					break;
+				case "deleteMovie":
+					location.href = 'deleteMovie.jsp?register_no=' + register_no;
+					break;
+				case "changeVersionInfo":
+					location.href = 'changeVersionInfo.jsp?register_no=' + register_no;
+					break;
+				case "changeEpisodeInfo":
+					location.href = 'changeEpisodeInfo.jsp?register_no=' + register_no;
+					break;
+			}
+		}
 	
 		$(document).ready( function () {
 			let table = $('#datatables').DataTable({
@@ -68,7 +88,16 @@
 					{ data: "movie_start_year" },
 					{ data: "genre_name" },
 					{ data: "avg_rate" },
-				]
+				],
+				createdRow: function(row, data, index) {
+					// https://www.datatables.net/examples/advanced_init/row_callback.html
+					console.log('data: ', data);
+					if (data.movie_type == 'TV Series') {
+						$("#episodeBtn").show();
+					} else {
+						$("#episodeBtn").hide();
+					}
+				}
 			});
 		});
 	</script>

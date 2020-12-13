@@ -19,11 +19,54 @@
 					</thead>
 				</table>
 			</div>
-			<p class="justify-content-center">행을 선택하여 해당 영상물 정보를 수정합니다.</p>
+			
+			<div class="text-center mt-4">
+				<button onclick="onClickHandler('changeEpisodeInfoDetail')" class="btn btn-outline-secondary">에피소드 정보 수정</button>
+			
+				<button onclick="onClickHandler('deleteEpisode')" class="btn btn-outline-secondary">에피소드 삭제</button>
+			</div>
 		</div>
 	</div>
 	
 	<script type="text/javascript">
+	function getParam(sname) {
+		var params = location.search.substr(location.search.indexOf("?") + 1);
+		var sval = "";
+		params = params.split("&");
+		for (var i = 0; i < params.length; i++) {
+			temp = params[i].split("=");
+			if ([temp[0]] == sname) { sval = temp[1]; }
+		}
+		return sval;
+	};
+	
+	function getCheckedRadio() {
+		let radio = document.getElementsByName('episode_no');
+		for(let i = 0; i < radio.length; i++) {
+			//console.log('i: ', i, radio[i]);
+			if(radio[i].checked == true) {
+				return radio[i].value;
+			}
+		}
+	}
+	
+	function onClickHandler(str) {
+		let register_no = getParam('register_no');
+		let episode_no = getCheckedRadio();
+		console.log('episode_no: ', episode_no);
+		if (episode_no != undefined){			
+			
+			switch(str) {
+				case "changeEpisodeInfoDetail":
+					location.href = 'changeEpisodeInfoDetail.jsp?episode_no=' + episode_no;
+					break;
+				case "deleteEpisode":
+					location.href = 'deleteEpisode.jsp?episode_no=' + episode_no;
+					break;
+			}
+		}
+	}
+	
 	$(document).ready( function () {
 		let table = $('#datatables').DataTable({
 			//serverSide: true,
@@ -31,22 +74,18 @@
 			searching: false,
 			info: false,
 			ajax: {
-				url: './process/~.jsp'
+				url: './process/getVideoEpisodes.jsp',
+				data: {"register_no": getParam('register_no')}
 			},
 			columns: [
-				{ data: "episode_no" },
+				{ data: 'episode_no',
+					render: function(data, type, row){
+						data = '<input type="radio" name="episode_no" value="' + data + '" />  ' + data;
+						return data;
+					}},
 				{ data: "episode_name" },
 			]
 		});
-		
-		// https://pjsprogram.tistory.com/51
-		$('#datatables tbody').on('click', 'tr', function() {
-			let data = table.row($(this).closest('tr')).data();
-            // console.log('data', data);
-            let register_no = data.movie_register_no;
-            // console.log('register_no', register_no);
-            location.href = 'changeEpisodeInfoMenu.jsp?register_no=' + register_no;
-		})
 	});
 	</script>
 </body>
