@@ -35,7 +35,7 @@ cd COMP322_phase4
 
 1. Change path for Java library files.
 
-    ![jar_path](https://github.com/cheesecat47/COMP322_phase4/blob/main/docs/jar_path.png)
+    ![jar_path](https://github.com/cheesecat47/COMP322_phase4/blob/main/docs/img/jar_path.png?raw=true)
 
 1. And run tomcat server on Eclipse EE.  
 
