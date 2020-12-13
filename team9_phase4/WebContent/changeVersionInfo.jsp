@@ -56,14 +56,15 @@
 		let register_no = getParam('register_no');
 		let version_no = getCheckedRadio();
 		console.log('version_no: ', version_no);
-		
-		switch(str) {
-			case "changeVersionInfoDetail":
-				location.href = 'changeVersionInfoDetail.jsp?version_no=' + version_no;
-				break;
-			case "deleteVersion":
-				location.href = 'deleteVersion.jsp?version_no=' + version_no;
-				break;
+		if (version_no != undefined){			
+			switch(str) {
+				case "changeVersionInfoDetail":
+					location.href = 'changeVersionInfoDetail.jsp?version_no=' + version_no;
+					break;
+				case "deleteVersion":
+					location.href = 'deleteVersion.jsp?version_no=' + version_no;
+					break;
+			}
 		}
 	}
 	
