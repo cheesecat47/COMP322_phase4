@@ -55,7 +55,6 @@
 		let episode_no = getCheckedRadio();
 		console.log('episode_no: ', episode_no);
 		if (episode_no != undefined){			
-			
 			switch(str) {
 				case "changeEpisodeInfoDetail":
 					location.href = 'changeEpisodeInfoDetail.jsp?episode_no=' + episode_no;
