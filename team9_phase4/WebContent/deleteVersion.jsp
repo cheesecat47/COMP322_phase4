@@ -34,7 +34,7 @@
 		$(document).ready(function () {
 			let deleteBtn = document.getElementById("deleteBtn");
 			deleteBtn.addEventListener('click', function() {
-				let form = document.deleteMovieForm;
+				let form = document.deleteVersionForm;
 				console.log('deleteVersion: form: ', form);
 				form.action = "./process/deleteVersionProcess.jsp?version_no=" + getParam('version_no');
 				form.submit();

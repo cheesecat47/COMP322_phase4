@@ -23,9 +23,9 @@
 			</div>
 			
 			<div class="text-center mt-4">
-				<button onclick="onClickHandler('changeVersionInfoDetai')" style="width:24%" class="btn btn-outline-secondary">버전 정보 수정</button>
+				<button onclick="onClickHandler('changeVersionInfoDetail')" class="btn btn-outline-secondary">버전 정보 수정</button>
 			
-				<button onclick="onClickHandler('deleteVersion')" style="width:24%" class="btn btn-outline-secondary">버전 삭제</button>
+				<button onclick="onClickHandler('deleteVersion')" class="btn btn-outline-secondary">버전 삭제</button>
 			</div>
 		</div>
 	</div>

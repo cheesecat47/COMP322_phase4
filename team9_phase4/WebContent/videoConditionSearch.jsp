@@ -46,7 +46,7 @@
 			      </div>
 	        </div>
 	        <div class="form-group row justify-content-end">
-	        	<button type="searchBtn" class="btn btn-primary mb-2">해당 조건 검색</button>
+	        	<button id="searchBtn" class="btn btn-primary mb-2">해당 조건 검색</button>
 	        </div>
 		</form>
 		
@@ -111,7 +111,7 @@
 	            location.href = 'checkVideoConditionSearchDetails.jsp?register_no=' + register_no;
 			})
 			
-			$("searchBtn").on("click", function () {
+			$("#searchBtn").on("click", function () {
 				table.ajax.reload();
 			})
 		});
