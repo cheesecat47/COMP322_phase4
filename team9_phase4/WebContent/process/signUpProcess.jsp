@@ -17,8 +17,9 @@
 	String account_phone = request.getParameter("phone");
 	String account_job = request.getParameter("job");
 
-	if (account_pw.equals(checkPw)) {
+	if (!account_pw.equals(checkPw)) {
         System.out.println("비밀번호 확인이 일치하지 않습니다.");
+        response.sendRedirect("../beforeLogin.jsp");
         return;
     }
 	
@@ -29,18 +30,21 @@
     if (account_id.equals("") || account_pw.equals("")
             || account_name.equals("") || account_phone.equals("")) {
         System.out.println("필수 항목을 입력하지 않았습니다.");
+        response.sendRedirect("../beforeLogin.jsp");
         return;
     }
 	
  	// 생년월일 포맷 검사
-    if (!chk.checkDateFormat(account_bday)) {
+    if (!account_bday.equals("") && !chk.checkDateFormat(account_bday)) {
         System.out.println("생년월일을 형식에 맞게 입력해주세요.");
-        /* return; */
+        response.sendRedirect("../beforeLogin.jsp");
+        return;
     }
  	
  	// 전화번호 포맷 검사
-    if (!chk.checkPhoneFormat(account_phone)) {
+    if (!account_phone.equals("") && !chk.checkPhoneFormat(account_phone)) {
         System.out.println("전화번호를 형식에 맞게 입력해주세요.");
+        response.sendRedirect("../beforeLogin.jsp");
         return;
     }
 
